@@ -17,11 +17,12 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from sns import views
-
+from sns.views import FeedViewSet
+from user.views import UserViewSet
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -37,11 +38,13 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-router.register(r'feed', views.FeedViewSet)
+router.register(r'feed', FeedViewSet)
+router.register(r'user', UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('api-token-auth/', obtain_auth_token),
 
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
