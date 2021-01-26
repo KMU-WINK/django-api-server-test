@@ -40,7 +40,7 @@ schema_view = get_schema_view(
 router = DefaultRouter()
 router.register(r'feed', FeedViewSet)
 router.register(r'user', UserViewSet)
-router.register(r'comment', CommentViewSet)
+router.register(r'feed/(?P<id>\d+)/comment', CommentViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
